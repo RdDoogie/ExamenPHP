@@ -1,18 +1,20 @@
 <?php
 
+use Http\controllers\NotesController;
+
 $router->get('/', 'index.php');
 $router->get('/about', 'about.php');
 $router->get('/contact', 'contact.php');
 
-$router->get('/notes', 'notes/index.php')->only('auth');
-$router->get('/note', 'notes/show.php');
-$router->delete('/note', 'notes/destroy.php');
+$router->get('/notes', [NotesController::class, 'index'])->only('auth');
+$router->get('/note', [NotesController::class, 'show'])->only('auth');
+$router->delete('/note', [NotesController::class, 'destroy'])->only('auth');
 
-$router->get('/note/edit', 'notes/edit.php');
-$router->patch('/note', 'notes/update.php');
+$router->get('/note/edit', [NotesController::class, 'edit'])->only('auth');
+$router->patch('/note', [NotesController::class, 'update'])->only('auth');
 
-$router->get('/notes/create', 'notes/create.php');
-$router->post('/notes', 'notes/store.php');
+$router->get('/notes/create', [NotesController::class, 'create'])->only('auth');
+$router->post('/notes', [NotesController::class, 'store'])->only('auth');
 
 $router->get('/register', 'registration/create.php')->only('guest');
 $router->post('/register', 'registration/store.php')->only('guest');

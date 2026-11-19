@@ -33,12 +33,15 @@ if ($user) {
     header('location: /');
     exit();
 } else {
-    $user = $db->query('INSERT INTO users(email, password) VALUES(:email, :password)', [
+    $db->query('INSERT INTO users(email, password) VALUES(:email, :password)', [
         'email' => $email,
         'password' => password_hash($password, PASSWORD_BCRYPT)
     ]);
 
-    (new Authenticator)->login(['email' => $email]);
+    (new Authenticator)->login([
+        'id' => $db->connection->lastInsertId(),
+        'email' => $email
+    ]);
 
     header('location: /');
     exit();
